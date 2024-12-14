@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Blog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BlogController extends Controller
 {
@@ -37,6 +38,24 @@ class BlogController extends Controller
         }])
         ->find($id);
         return view('blog.display', compact('blog'));
+    }
+
+    public function list(){
+        $blogs = Blog::where('user_id', Auth::id())->paginate(5);
+        return view('blog.list', compact('blogs'));
+    }
+    public function edit($blogId){
+        $blogId = decrypt($blogId);
+        $blog = Blog::find($blogId);
+        return view('blog.edit', compact('blog'));
+    }
+    public function update(Request $request, $blogId){
+        $blogId = decrypt($blogId);
+        $blog = Blog::find($blogId);
+        $blog->title = $request->title;
+        $blog->content = $request->content;
+        $blog->update();
+        return redirect()->route('blog.list');
     }
 }
 

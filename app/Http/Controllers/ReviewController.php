@@ -17,9 +17,6 @@ class ReviewController extends Controller
     }
 
     public function store(Request $request, $blogId) {
-        if(!Auth::check()){
-            return redirect()->route('user.login')->with('message', 'You need to login!');
-        }
         try{
 
             $request->validate([
@@ -31,7 +28,9 @@ class ReviewController extends Controller
 
 
             $review = new Review();
-            $review->user_id = Auth::id();
+            if (Auth::check()) {
+                $review->user_id = Auth::id();
+            }
             $review->blog_id = $blog->id;
             $review->content = $request->content;
             $review->save();

@@ -19,20 +19,24 @@
                     @if(Auth::check())
 
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('blog.create') }}">Create Blog</a>
+                        <a class="nav-link {{ request()->routeIs('blog.create') ? 'active' : '' }}"
+                            href="{{ route('blog.create') }}">Create Blog</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item ml-2  {{ request()->routeIs('blog.list') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('blog.list') }}">My Blogs</a>
+                    </li>
+                    <li class="nav-item ml-2">
                         <form action="{{ route('user.logout') }}" method="POST" class="form-inline">
                             @csrf
-                            <button type="submit" class="btn btn-danger">Logout</button>
+                            <button class="btn text-white-50" type="submit">Logout</button>
                         </form>
                     </li>
                     @else
 
-                    <li class="nav-item">
+                    <li class="nav-item  {{ request()->routeIs('blog.register') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ route('user.register') }}">Register</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item  {{ request()->routeIs('blog.login') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ route('user.login') }}">Login</a>
                     </li>
                     @endif
@@ -80,7 +84,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
     <script>
-        // CKEDITOR.replace('editor');
 
         $(document).ready(function() {
                 CKEDITOR.replace('editor', {

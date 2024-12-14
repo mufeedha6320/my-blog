@@ -16,12 +16,11 @@
                     <h5 class="mb-2">Reviews</h5>
                     @foreach($blog->reviews as $review)
                         <div class="review">
-                            <strong>{{ $review->user->name }}</strong> -
+                            <strong>{{ $review->user ? $review->user->name : 'Unknown' }}</strong> -
                             <p class="ml-2">{{ $review->content }}</p>
                         </div>
                     @endforeach
 
-                    @auth
                     <form action="{{ route('review.store', encrypt($blog->id) ) }}" method="POST">
                         @csrf
                         <div class="form-group">
@@ -30,9 +29,6 @@
                         </div>
                         <button type="submit" class="btn btn-primary">Submit Review</button>
                     </form>
-                    @else
-                        <p>You need to <a href="{{ route('user.login') }}">log in</a> to submit a review.</p>
-                    @endauth
 
                 </div>
             </div>
